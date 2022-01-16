@@ -4,7 +4,6 @@ const sliders = (slides, dir, prev, next) => {
 
     const items = document.querySelectorAll(slides);
           
-    
     function showSlide(num) {
         if (num > items.length) {
             slideIndex = 1;
@@ -72,9 +71,6 @@ const sliders = (slides, dir, prev, next) => {
     items[0].parentNode.addEventListener('mouseleave', () => {
         activeteAnimation();
     });
-    
-
-
 };
 
 export default sliders;

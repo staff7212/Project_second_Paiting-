@@ -1,6 +1,6 @@
 import {calcScroll, modifyBody} from '../services/calcScroll';
 
-const modals = (state) => {
+const modals = () => {
     let btnPressed = false;
 
     function bindModal(triggerSelector, modalSelector, closeSelector, destroy = false) {
@@ -28,11 +28,12 @@ const modals = (state) => {
                     item.value = '';
                 });
 
-                for (let key in state) {
-                    if (key == 'width' && key == 'height') {
-                        delete state[key];
-                    }  
-                }
+                //
+                // for (let key in state) {
+                //     if (key == 'width' && key == 'height') {
+                //         delete state[key];
+                //     }  
+                // }
                 
                 modifyBody('', scroll);
             }     
@@ -50,17 +51,19 @@ const modals = (state) => {
 
                 btnPressed = true;
 
-                if (modal.classList.contains('popup_calc_profile')) {
-                    if (!state.form || !state.width || state.width <= 0 || !state.height || state.height <= 0) {
-                        return;
-                    }
-                }
-
-                if (modal.classList.contains('popup_calc_end')) {
-                    if (!state.type || !state.profile) {
-                        return;
-                    }
-                }
+            
+                //
+                // if (modal.classList.contains('popup_calc_profile')) {
+                //     if (!state.form || !state.width || state.width <= 0 || !state.height || state.height <= 0) {
+                //         return;
+                //     }
+                // }
+                // //
+                // if (modal.classList.contains('popup_calc_end')) {
+                //     if (!state.type || !state.profile) {
+                //         return;
+                //     }
+                // }
 
                 windows.forEach(item => {
                     item.style.display = 'none';
