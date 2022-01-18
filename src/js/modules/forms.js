@@ -1,12 +1,10 @@
-//import checkNumInputs from './checkNumInputs';
+import {postData} from '../services/requests';
 
 const forms = () => {
     const forms = document.querySelectorAll('.form'),
           inputs = document.querySelectorAll('input'),
           windows = document.querySelectorAll('[data-modal]'),
           upload = document.querySelectorAll('[name="upload"]');
-    
-    //checkNumInputs('input[name="user_phone"]');
     
     const message = {
         loading: 'Загрузка...',
@@ -25,14 +23,6 @@ const forms = () => {
     forms.forEach(item => {
         bindPostData(item);
     });
-
-    const postData = async (url, data) => {
-        const res = await fetch(url, {
-            method: 'POST',
-            body: data
-        });
-        return await res.text();
-    };
 
     const clearInput = () => {
         inputs.forEach(item => {
