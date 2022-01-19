@@ -5,6 +5,7 @@ import mask from './modules/mask';
 import checkTextInputs from './modules/checkTextInputs';
 import showMoreStyles from './modules/showMoreStyles';
 import priceCalc from './modules/priceCalc';
+import filter from './modules/filter';
 
 document.addEventListener('DOMContentLoaded', () => {
     'use strict';
@@ -22,6 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
     checkTextInputs('[name="message"]');
     //showMoreStyles('.button-styles', '.styles-2'); //когда карточки в вёрстке
     showMoreStyles('.button-styles', '#styles .row');
+    filter();
 
 
 });
