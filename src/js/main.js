@@ -6,6 +6,7 @@ import checkTextInputs from './modules/checkTextInputs';
 import showMoreStyles from './modules/showMoreStyles';
 import priceCalc from './modules/priceCalc';
 import filter from './modules/filter';
+import pictureSize from './modules/pictureSize';
 
 document.addEventListener('DOMContentLoaded', () => {
     'use strict';
@@ -24,6 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
     //showMoreStyles('.button-styles', '.styles-2'); //когда карточки в вёрстке
     showMoreStyles('.button-styles', '#styles .row');
     filter();
+    pictureSize('.sizes-block');
 
 
 });
