@@ -170,22 +170,28 @@ const filter = () => {
         exampleAll = wrapper.querySelectorAll('.all'),
         noExamples = document.querySelector('.portfolio-no');
 
+  function hideElem(element) {
+    element.style.display = 'none';
+    element.classList.remove('animated', 'fadeIn');
+  }
+
+  function showElem(element) {
+    element.style.display = 'block';
+    element.classList.add('animated', 'fadeIn');
+  }
+
   function typeFilter(exampleType) {
     exampleAll.forEach(example => {
-      example.style.display = 'none';
-      example.classList.remove('animated', 'fadeIn');
+      hideElem(example);
     });
-    noExamples.style.display = 'none';
-    noExamples.classList.remove('animated', 'fadeIn');
+    hideElem(noExamples);
 
     if (exampleType) {
       exampleType.forEach(example => {
-        example.style.display = 'block';
-        example.classList.add('animated', 'fadeIn');
+        showElem(example);
       });
     } else {
-      noExamples.style.display = 'block';
-      noExamples.classList.add('animated', 'fadeIn');
+      showElem(noExamples);
     }
   } // function clickBtn (selector) {
   //     const btn = menu.querySelector(selector),
