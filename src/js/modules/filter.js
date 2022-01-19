@@ -25,28 +25,40 @@ const filter = () => {
         } 
     }
 
-    function clickBtn (selector) {
-        const btn = menu.querySelector(selector),
-              example = wrapper.querySelectorAll(selector);
+    // function clickBtn (selector) {
+    //     const btn = menu.querySelector(selector),
+    //           examples = wrapper.querySelectorAll(selector);
 
-        btn.addEventListener('click', () => {
-            if (selector != '.grandmother' && selector != '.granddad') {
-                typeFilter(example);
-            } else {
-                typeFilter();
-            } 
-        });
+    //     btn.addEventListener('click', () => {
+    //         if (selector != '.grandmother' && selector != '.granddad') {
+    //             typeFilter(examples);
+    //         } else {
+    //             typeFilter();
+    //         } 
+    //     });
         
-    }
+    // }
 
-    clickBtn('.all');
-    clickBtn('.lovers');
-    clickBtn('.chef');
-    clickBtn('.girl');
-    clickBtn('.guy');
-    clickBtn('.grandmother');
-    clickBtn('.granddad');
+    // clickBtn('.all');
+    // clickBtn('.lovers');
+    // clickBtn('.chef');
+    // clickBtn('.girl');
+    // clickBtn('.guy');
+    // clickBtn('.grandmother');
+    // clickBtn('.granddad');
+
+    //более короткий вариант функции clickBtn
+    // menu.addEventListener('click', (e) => {
+    //     let classSelect = e.target.classList[0];
+    //     let examples = wrapper.querySelectorAll(`.${classSelect}`);
+    //     if (classSelect != 'grandmother' && classSelect != 'granddad') {
+    //         typeFilter(examples);
+    //     } else {
+    //         typeFilter();
+    //     }  
+    // });
     
+    //еще более практичный вариант исполнения
     menu.addEventListener('click', (e) => {
         const target = e.target;
 
@@ -55,6 +67,14 @@ const filter = () => {
                 item.classList.remove('active');
             });
             target.classList.add('active');
+
+            let classSelect = e.target.classList[0];
+            let examples = wrapper.querySelectorAll(`.${classSelect}`);
+            if (classSelect != 'grandmother' && classSelect != 'granddad') {
+                typeFilter(examples);
+            } else {
+                typeFilter();
+            }
         }
     });
 };
