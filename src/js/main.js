@@ -4,18 +4,23 @@ import forms from './modules/forms';
 import mask from './modules/mask';
 import checkTextInputs from './modules/checkTextInputs';
 import showMoreStyles from './modules/showMoreStyles';
+import priceCalc from './modules/priceCalc';
 
 document.addEventListener('DOMContentLoaded', () => {
     'use strict';
 
+
+    const pictureParameters = {};
+
     modals();
     sliders('.feedback-slider-item', 'horizontal', '.main-prev-btn', '.main-next-btn');
     sliders('.main-slider-item', 'vertical',);
-    forms();
+    priceCalc('#size', '#material', '#options', '.promocode', '.calc-price', pictureParameters);
+    forms(pictureParameters);
     mask('[name="phone"]');
     checkTextInputs('[name="name"]');
     checkTextInputs('[name="message"]');
-    //showMoreStyles('.button-styles', '.styles-2');
+    //showMoreStyles('.button-styles', '.styles-2'); //когда карточки в вёрстке
     showMoreStyles('.button-styles', '#styles .row');
 
 

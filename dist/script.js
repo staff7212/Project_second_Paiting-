@@ -101,6 +101,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_mask__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/mask */ "./src/js/modules/mask.js");
 /* harmony import */ var _modules_checkTextInputs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/checkTextInputs */ "./src/js/modules/checkTextInputs.js");
 /* harmony import */ var _modules_showMoreStyles__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/showMoreStyles */ "./src/js/modules/showMoreStyles.js");
+/* harmony import */ var _modules_priceCalc__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/priceCalc */ "./src/js/modules/priceCalc.js");
+
 
 
 
@@ -110,13 +112,15 @@ __webpack_require__.r(__webpack_exports__);
 document.addEventListener('DOMContentLoaded', () => {
   'use strict';
 
+  const pictureParameters = {};
   Object(_modules_modals__WEBPACK_IMPORTED_MODULE_0__["default"])();
   Object(_modules_sliders__WEBPACK_IMPORTED_MODULE_1__["default"])('.feedback-slider-item', 'horizontal', '.main-prev-btn', '.main-next-btn');
   Object(_modules_sliders__WEBPACK_IMPORTED_MODULE_1__["default"])('.main-slider-item', 'vertical');
-  Object(_modules_forms__WEBPACK_IMPORTED_MODULE_2__["default"])();
+  Object(_modules_priceCalc__WEBPACK_IMPORTED_MODULE_6__["default"])('#size', '#material', '#options', '.promocode', '.calc-price', pictureParameters);
+  Object(_modules_forms__WEBPACK_IMPORTED_MODULE_2__["default"])(pictureParameters);
   Object(_modules_mask__WEBPACK_IMPORTED_MODULE_3__["default"])('[name="phone"]');
   Object(_modules_checkTextInputs__WEBPACK_IMPORTED_MODULE_4__["default"])('[name="name"]');
-  Object(_modules_checkTextInputs__WEBPACK_IMPORTED_MODULE_4__["default"])('[name="message"]'); //showMoreStyles('.button-styles', '.styles-2');
+  Object(_modules_checkTextInputs__WEBPACK_IMPORTED_MODULE_4__["default"])('[name="message"]'); //showMoreStyles('.button-styles', '.styles-2'); //когда карточки в вёрстке
 
   Object(_modules_showMoreStyles__WEBPACK_IMPORTED_MODULE_5__["default"])('.button-styles', '#styles .row');
 });
@@ -159,7 +163,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _services_requests__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../services/requests */ "./src/js/services/requests.js");
 
 
-const forms = () => {
+const forms = obj => {
   const forms = document.querySelectorAll('.form'),
         inputs = document.querySelectorAll('input'),
         windows = document.querySelectorAll('[data-modal]'),
@@ -217,6 +221,13 @@ const forms = () => {
       textMessage.textContent = message.loading;
       statusMessage.appendChild(textMessage);
       const formData = new FormData(form);
+
+      if (form.classList.contains('calc_form')) {
+        for (let key in obj) {
+          formData.append(key, obj[key]);
+        }
+      }
+
       let api;
       form.closest('.popup-design') || form.classList.contains('calc_form') ? api = path.designer : api = path.question;
       Object(_services_requests__WEBPACK_IMPORTED_MODULE_0__["postData"])(api, formData).then(data => {
@@ -237,6 +248,14 @@ const forms = () => {
           form.style.display = 'block';
           form.classList.remove('fadeOutUp');
           form.classList.add('fadeInUp');
+          document.querySelectorAll('select').forEach(sel => sel.selectedIndex = 0);
+
+          for (let key in obj) {
+            delete obj[key];
+          }
+
+          document.querySelector('.calc-price').style.fontSize = '14px';
+          document.querySelector('.calc-price').textContent = 'Для расчета нужно выбрать размер картины и материал картины';
         }, 3000);
       });
     });
@@ -430,6 +449,83 @@ const modals = () => {
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (modals);
+
+/***/ }),
+
+/***/ "./src/js/modules/priceCalc.js":
+/*!*************************************!*\
+  !*** ./src/js/modules/priceCalc.js ***!
+  \*************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _services_requests__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../services/requests */ "./src/js/services/requests.js");
+
+
+const priceCalc = (size, material, options, promocode, result, obj) => {
+  const sizeBlock = document.querySelector(size),
+        materialBlock = document.querySelector(material),
+        optionsBlock = document.querySelector(options),
+        promocodeBlock = document.querySelector(promocode),
+        resultBlock = document.querySelector(result);
+  let sum,
+      sizeValue = '',
+      materialValue = '',
+      optionsValue = '';
+
+  function changeParameters(event, elem, prop) {
+    elem.addEventListener(event, e => {
+      const target = e.target,
+            select = target.id;
+
+      function calcResult(data) {
+        for (let key in data[select]) {
+          obj[prop] = elem.value;
+
+          if (elem.value === key) {
+            switch (select) {
+              case 'size':
+                sizeValue = data[select][key];
+                break;
+
+              case 'material':
+                materialValue = data[select][key];
+                break;
+
+              case 'options':
+                optionsValue = data[select][key];
+                break;
+            }
+          }
+        }
+
+        console.log(obj);
+        sum = Math.round(+sizeValue * +materialValue + +optionsValue);
+
+        if (sizeBlock.value == '' || materialBlock.value == '') {
+          resultBlock.textContent = 'Пожалуйста, выберете размер и материал картины';
+        } else if (promocodeBlock.value === 'IWANTPOPART') {
+          obj['promo'] = true;
+          resultBlock.textContent = Math.round(sum * 0.7);
+        } else {
+          resultBlock.style.fontSize = '2em';
+          resultBlock.textContent = sum + ' рублей';
+        }
+      }
+
+      Object(_services_requests__WEBPACK_IMPORTED_MODULE_0__["getResorse"])('assets/price.json').then(data => calcResult(data)).catch(error => console.log(error));
+    });
+  }
+
+  changeParameters('change', sizeBlock, 'size');
+  changeParameters('change', materialBlock, 'material');
+  changeParameters('change', optionsBlock, 'option');
+  changeParameters('input', promocodeBlock);
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (priceCalc);
 
 /***/ }),
 
