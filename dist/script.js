@@ -104,6 +104,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_priceCalc__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/priceCalc */ "./src/js/modules/priceCalc.js");
 /* harmony import */ var _modules_filter__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./modules/filter */ "./src/js/modules/filter.js");
 /* harmony import */ var _modules_pictureSize__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./modules/pictureSize */ "./src/js/modules/pictureSize.js");
+/* harmony import */ var _modules_accordion__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./modules/accordion */ "./src/js/modules/accordion.js");
+
 
 
 
@@ -129,7 +131,81 @@ document.addEventListener('DOMContentLoaded', () => {
   Object(_modules_showMoreStyles__WEBPACK_IMPORTED_MODULE_5__["default"])('.button-styles', '#styles .row');
   Object(_modules_filter__WEBPACK_IMPORTED_MODULE_7__["default"])();
   Object(_modules_pictureSize__WEBPACK_IMPORTED_MODULE_8__["default"])('.sizes-block');
+  Object(_modules_accordion__WEBPACK_IMPORTED_MODULE_9__["default"])('.accordion-heading');
 });
+
+/***/ }),
+
+/***/ "./src/js/modules/accordion.js":
+/*!*************************************!*\
+  !*** ./src/js/modules/accordion.js ***!
+  \*************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+const accordion = triggerSelector => {
+  const btns = document.querySelectorAll(triggerSelector);
+  btns.forEach(btn => {
+    btn.addEventListener('click', function () {
+      btns.forEach(btn => {
+        if (!this.classList.contains('active-style')) {
+          btn.classList.remove('active-style');
+          btn.nextElementSibling.classList.remove('active-content');
+          btn.nextElementSibling.style.maxHeight = '0px';
+        }
+      });
+      this.classList.toggle('active-style');
+      this.nextElementSibling.classList.toggle('active-content');
+
+      if (this.classList.contains('active-style')) {
+        this.nextElementSibling.style.maxHeight = this.nextElementSibling.scrollHeight + 80 + 'px';
+      } else {
+        this.nextElementSibling.style.maxHeight = '0px';
+      }
+    });
+  }); //работа со стилями
+  //       blocks = document.querySelectorAll(itemsSelector);
+  // blocks.forEach(block => {
+  //     block.classList.add('animated', 'fadeInDown');
+  // });
+  // btns.forEach(btn => {
+  //     btn.addEventListener('click', function() {
+  //         if (!this.classList.contains('active')) {
+  //             btns.forEach(btn => {
+  //                 btn.classList.remove('active', 'active-style');
+  //             });
+  //             this.classList.add('active', 'active-style');
+  //         }
+  //     });
+  // });
+  //мой вариант, рабочий, но плохая анимация, не красиво
+  // const titles = document.querySelectorAll('.accordion-heading'),
+  //       contents = document.querySelectorAll('.accordion-block');
+  // contents.forEach(content => {
+  //     content.classList.add('animated', );
+  //     content.style.display = 'none';
+  // });
+  // function showContent(block) {
+  //     const content = block.nextElementSibling;
+  //     if (!content.classList.contains('fadeInDown')) {
+  //         content.style.display = 'block';
+  //         content.classList.remove('fadeOutUp');
+  //         content.classList.add('fadeInDown');
+  //     } else {
+  //         content.style.display = 'none';
+  //         content.classList.remove('fadeInDown');
+  //     }
+  // }
+  // titles.forEach(title => {
+  //     title.addEventListener('click', () => {
+  //         showContent(title);
+  //     });
+  // });
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (accordion);
 
 /***/ }),
 

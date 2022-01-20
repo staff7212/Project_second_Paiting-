@@ -7,6 +7,7 @@ import showMoreStyles from './modules/showMoreStyles';
 import priceCalc from './modules/priceCalc';
 import filter from './modules/filter';
 import pictureSize from './modules/pictureSize';
+import accordion from './modules/accordion';
 
 document.addEventListener('DOMContentLoaded', () => {
     'use strict';
@@ -26,6 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
     showMoreStyles('.button-styles', '#styles .row');
     filter();
     pictureSize('.sizes-block');
+    accordion('.accordion-heading');
 
 
 });

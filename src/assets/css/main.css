@@ -893,21 +893,48 @@ h4 {
   text-align: center;
 }
 .often-questions .accordion-heading {
+  position: relative;
+  z-index: 2;
   font-size: 2.2rem;
   cursor: pointer;
   text-align: center;
   margin-bottom: 4rem;
   margin-top: 2rem;
 }
+/* акардеон с классами и js */
+.often-questions .accordion-heading.active-style span {
+  color: #E950D7;
+  font-weight: 900;
+  text-decoration: none;
+  border: 0;
+} 
 .often-questions .accordion-heading span {
   border-bottom: 2px dotted #333;
 }
+/* акардеон  с классами*/
+/* .often-questions .accordion-heading.active + .accordion-block {
+  display: block;
+} */
+/* акардеон js*/
 .often-questions .accordion-block {
+  background-color: #f7e7e6;
+  max-height: 0;
+  opacity: 0;
+  transition: all 0.3s ease-out;
+  /* для работы с классами */
+  /* display: none;
   margin-top: 1rem;
   background-color: #f7e7e6;
-  padding: 3rem 4rem;
+  padding: 3rem 4rem; */
+}
+/* акардеон js */
+.often-questions .accordion-block.active-content {
+  opacity: 1;
+  margin-top: 1rem;
+  padding: 3rem 4rem; 
 }
 .often-questions .accordion-block:before {
+  z-index: 1;
   content: '';
   position: absolute;
   left: 50%;
