@@ -41,14 +41,11 @@ const priceCalc = (size, material, options, promocode, result, obj) => {
                     resultBlock.textContent = sum + ' рублей';
                 }
             }
-            
-
             getResorse('assets/price.json')
             .then (data => calcResult(data))
             .catch(error => console.log(error));
         });  
     }
-
     changeParameters('change', sizeBlock, 'size');
     changeParameters('change', materialBlock, 'material');
     changeParameters('change', optionsBlock, 'option');

@@ -31,15 +31,18 @@ const forms = (obj) => {
         upload.forEach(item => {
             item.previousElementSibling.textContent = 'Файл не выбран';
         });
+        document.querySelector('textarea').value = '';
     };
 
     upload.forEach(item => {
         item.addEventListener('input', () => {
             let dots;
-            const arr = item.files[0].name.split('.');
-            arr[0].length > 25 ? dots = '...' : dots = '.';
-            const name = arr[0].substring(0, 25) + dots + arr[arr.length - 1];
-            item.previousElementSibling.textContent = name;
+            if (item.files.length) {
+                const arr = item.files[0].name.split('.');
+                arr[0].length > 15 ? dots = '...' : dots = '.';
+                const name = arr[0].substring(0, 15) + dots + arr[arr.length - 1];
+                item.previousElementSibling.textContent = name;
+            }
         });
     });
 

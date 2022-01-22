@@ -27,8 +27,6 @@ const pictureSize = (imgSelector) => {
             hideImg(block);
         });
     });
-
-    
 };
 
 export default pictureSize;

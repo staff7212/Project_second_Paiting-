@@ -13,7 +13,6 @@ const sliders = (slides, dir, prev, next) => {
             slideIndex = items.length;
         }
         
-        
         items.forEach(item => {
             item.classList.add('animated');
             item.style.display = 'none';

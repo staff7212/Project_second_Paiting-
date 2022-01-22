@@ -107,6 +107,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_accordion__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./modules/accordion */ "./src/js/modules/accordion.js");
 /* harmony import */ var _modules_burger__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./modules/burger */ "./src/js/modules/burger.js");
 /* harmony import */ var _modules_scrolling__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./modules/scrolling */ "./src/js/modules/scrolling.js");
+/* harmony import */ var _modules_drop__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./modules/drop */ "./src/js/modules/drop.js");
+
 
 
 
@@ -138,6 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
   Object(_modules_accordion__WEBPACK_IMPORTED_MODULE_9__["default"])('.accordion-heading');
   Object(_modules_burger__WEBPACK_IMPORTED_MODULE_10__["default"])('.burger-menu', '.burger');
   Object(_modules_scrolling__WEBPACK_IMPORTED_MODULE_11__["default"])('.pageup');
+  Object(_modules_drop__WEBPACK_IMPORTED_MODULE_12__["default"])();
 });
 
 /***/ }),
@@ -267,6 +270,89 @@ const checkTextInputs = selector => {
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (checkTextInputs);
+
+/***/ }),
+
+/***/ "./src/js/modules/drop.js":
+/*!********************************!*\
+  !*** ./src/js/modules/drop.js ***!
+  \********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _services_requests__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../services/requests */ "./src/js/services/requests.js");
+
+
+const drop = () => {
+  // drag *
+  // dragend *
+  // dragenter - объект над dropArea
+  // dragexit *
+  // dragleave - объект за пределами dropArea
+  // dragover - объект зависает над dropArea
+  // dragstart *
+  // drop - объект отправлен в dropArea
+  //*работа с элем на странице, не из вне
+  const fileInputs = document.querySelectorAll('[name="upload"]');
+  ['dragenter', 'dragleave', 'dragover', 'drop'].forEach(eventName => {
+    fileInputs.forEach(input => {
+      input.addEventListener(eventName, preventDefault, false);
+    });
+  });
+
+  function preventDefault(e) {
+    e.preventDefault();
+    e.stopPropagation();
+  }
+
+  function highlight(item) {
+    item.closest('.file_upload').style.border = '1px solid yellow';
+  }
+
+  function unhighlight(item) {
+    item.closest('.file_upload').style.border = '';
+  }
+
+  ['dragenter', 'dragover'].forEach(eventName => {
+    fileInputs.forEach(input => {
+      input.addEventListener(eventName, () => highlight(input), false);
+    });
+  });
+  ['dragleave', 'drop'].forEach(eventName => {
+    fileInputs.forEach(input => {
+      input.addEventListener(eventName, () => unhighlight(input), false);
+    });
+  });
+  fileInputs.forEach(input => {
+    input.addEventListener('drop', e => {
+      input.files = e.dataTransfer.files;
+      let dots;
+
+      if (input.files.length) {
+        const arr = input.files[0].name.split('.');
+        arr[0].length > 25 ? dots = '...' : dots = '.';
+        const name = arr[0].substring(0, 25) + dots + arr[arr.length - 1];
+        input.previousElementSibling.textContent = name;
+      }
+
+      if (input.closest('.main')) {
+        const formData = new FormData();
+        formData.append('file', input.files[0]);
+        Object(_services_requests__WEBPACK_IMPORTED_MODULE_0__["postData"])('assets/server.php', formData).then(data => console.log(data)).catch(err => console.log(err)).finally(() => {
+          input.value = '';
+          input.previousElementSibling.textContent = 'Файл загружен!';
+          setTimeout(() => {
+            input.previousElementSibling.textContent = 'Файл не выбран';
+          }, 2000);
+        });
+      }
+    });
+  });
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (drop);
 
 /***/ }),
 
@@ -404,15 +490,19 @@ const forms = obj => {
     upload.forEach(item => {
       item.previousElementSibling.textContent = 'Файл не выбран';
     });
+    document.querySelector('textarea').value = '';
   };
 
   upload.forEach(item => {
     item.addEventListener('input', () => {
       let dots;
-      const arr = item.files[0].name.split('.');
-      arr[0].length > 25 ? dots = '...' : dots = '.';
-      const name = arr[0].substring(0, 25) + dots + arr[arr.length - 1];
-      item.previousElementSibling.textContent = name;
+
+      if (item.files.length) {
+        const arr = item.files[0].name.split('.');
+        arr[0].length > 15 ? dots = '...' : dots = '.';
+        const name = arr[0].substring(0, 15) + dots + arr[arr.length - 1];
+        item.previousElementSibling.textContent = name;
+      }
     });
   });
 
@@ -575,13 +665,8 @@ const modals = () => {
         });
         inputs.forEach(item => {
           item.value = '';
-        }); //
-        // for (let key in state) {
-        //     if (key == 'width' && key == 'height') {
-        //         delete state[key];
-        //     }  
-        // }
-
+        });
+        document.querySelector('textarea').value = '';
         Object(_services_calcScroll__WEBPACK_IMPORTED_MODULE_0__["modifyBody"])('', scroll);
       }
     }
@@ -596,19 +681,7 @@ const modals = () => {
           item.remove();
         }
 
-        btnPressed = true; //
-        // if (modal.classList.contains('popup_calc_profile')) {
-        //     if (!state.form || !state.width || state.width <= 0 || !state.height || state.height <= 0) {
-        //         return;
-        //     }
-        // }
-        // //
-        // if (modal.classList.contains('popup_calc_end')) {
-        //     if (!state.type || !state.profile) {
-        //         return;
-        //     }
-        // }
-
+        btnPressed = true;
         windows.forEach(item => {
           item.style.display = 'none';
           item.classList.add('animated', 'fadeIn');
